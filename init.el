@@ -1,12 +1,12 @@
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
 (add-to-list 'package-archives '("marmalade" . "http://marmalade.ferrier.me.uk/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 
 (package-initialize)
-(unless (package-installed-p 'scala-mode)
-(package-refresh-contents) (package-install 'scala-mode))
 
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -19,7 +19,7 @@
 (setq global-linum-mode t)
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 (custom-set-variables
- '(initial-buffer-choice "e:/dev/prj/TODO.org")
+ '(initial-buffer-choice "D:/dev/prj/TODO.org")
  '(package-selected-packages
    (quote
     (scala-mode zenburn-theme zenburn use-package color-theme-monokai))))
@@ -27,16 +27,38 @@
 (split-window-vertically)
 (split-window-horizontally)
 
-
-
+;;Neotree
+(require 'neotree)
+(require 'all-the-icons)
+(global-set-key [f8] 'neotree-toggle)
 
 ;;Navigating
 (ido-mode 1)
+;(global-set-key (kbd "C-TAB") 'other-window)
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-l") 'find-tag)
+
 
 ;; Haskell
-(add-hook 'haskell-mode-hook #'hindent-mode)
-(load-file "e:/dev/emacs/vendors/intero/elisp/intero.el")
+(load-file "D:/dev/emacs/vendors/intero/elisp/intero.el")
 (add-hook 'haskell-mode-hook 'intero-mode)
+(custom-set-variables
+ '(haskell-stylish-on-save t))
+
+(custom-set-variables
+ '(haskell-tags-on-save t))
+
+(require 'hindent)
+(add-hook 'haskell-mode-hook #'hindent-mode)
+
+;(add-hook 'haskell-mode-hook 'my-haskell-mode-hook)
+
+
+;(require 'speedbar)
+;  (speedbar-add-supported-extension ".hs")
 
 ;;(require 'engine-mode)
 ;;(engine-mode t)
@@ -45,36 +67,17 @@
 ;; "https://www.haskell.org/hoogle/?hoogle="
 ;;  :browser 'eww-browse-url)
 
-;;Neotree
-(require 'neotree)
-(require 'all-the-icons)
-(global-set-key [f8] 'neotree-toggle)
 
 (require 'helm-config)
 (helm-mode 1)
 
 ;; Projectile
-(setq projectile-project-search-path '("e:/dev/prj/haskell" "e:/dev/prj/purescript"))
+(setq projectile-project-search-path '("d:/dev/prj/haskell" "d:/dev/prj/purescript"))
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
-;; Bash
-(setq explicit-shell-file-name "E:\dev\Git\usr\bin\bash.exe")
-(setq shell-file-name "bash")
-(setq explicit-bash.exe-args '("--noediting" "--login" "-i"))
-(setenv "SHELL" shell-file-name)
-(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m)
-(global-set-key [f2] 'shell)
 (global-set-key (kbd "M-9") 'kill-whole-line)
-
-;; Open split shell on launch
-(add-hook 'emacs-startup-hook
-  (lambda ()
-    (let ((w (split-window-below 2)))
-      (select-window w)
-      (sh))
-      (switch-to-buffer "*shell*")))
 
 ;; Yaml
  (require 'yaml-mode)
